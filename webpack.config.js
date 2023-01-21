@@ -2,32 +2,54 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-	entry: './src/index.js',
+	mode: 'development',
+	entry: {
+		bundle: path.resolve(__dirname, './src/index.js')
+	},
 	output: {
 		path: path.resolve(__dirname, 'dist'),
-		filename: 'main.js'
+		filename: '[name][contenthash].js',
+		clean: true,
+		assetModuleFilename: '[name][ext]'
 	},
-	resolve: {
-		extensions: ['.js']
+	devtool: 'source-map',
+	devServer: {
+		static: {
+			directory: path.resolve(__dirname, 'dist')
+		},
+		port: 8080,
+		open: true,
+		hot: true,
+		compress: true,
+		historyApiFallback: true
 	},
 	module: {
 		rules: [
 			{
-				test: /\.js?$/,
+				test: /\.scss$/,
+				use: ['style-loader', 'css-loader', 'sass-loader']
+			},
+			{
+				test: /\.js$/,
 				exclude: /node_modules/,
 				use: {
-					loader: 'babel-loader'
+					loader: 'babel-loader',
+					options: {
+						presets: ['@babel/preset-env']
+					}
 				}
+			},
+			{
+				test: /\.(jpg|jpeg|png|svg|gif)$/i,
+				type: 'asset/resource'
 			}
 		]
 	},
 	plugins: [
-		new HtmlWebpackPlugin([
-			{
-				inject: true,
-				template: './public/index.html',
-				filename: './index.html'
-			}
-		])
+		new HtmlWebpackPlugin({
+			title: 'webpack App from Cesar Contreras',
+			filename: './index.html',
+			template: './public/index.html'
+		})
 	]
 }

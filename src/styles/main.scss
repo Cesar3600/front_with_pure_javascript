@@ -1,0 +1,9 @@
+.container {
+	background-color: cyan;
+	font-size: 3rem;
+	& header {
+		color: red;
+		background-color: yellow;
+		font-size: 3rem;
+	}
+}
