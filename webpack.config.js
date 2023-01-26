@@ -1,5 +1,6 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
 	mode: 'development',
@@ -17,7 +18,7 @@ module.exports = {
 		static: {
 			directory: path.resolve(__dirname, 'dist')
 		},
-		port: 8080,
+		port: 3333,
 		open: true,
 		hot: true,
 		compress: true,
@@ -49,7 +50,14 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			title: 'webpack App from Cesar Contreras',
 			filename: './index.html',
-			template: './public/index.html'
-		})
+			template: './public/index.html',
+			inject: true
+		}),
+		new CopyWebpackPlugin([
+			{
+				from: './src/styles/styles.css',
+				to: ''
+			}
+		])
 	]
 }
